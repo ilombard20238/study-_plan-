@@ -354,6 +354,92 @@
 
 </div>
 
+<section>
+  <h2>My Weekly Learning Checklist</h2>
+
+  <div class="card">
+
+    <label>
+      <input type="checkbox" class="task">
+      Tuesday: Complete the main lesson
+    </label>
+
+    <br>
+
+    <label>
+      <input type="checkbox" class="task">
+      Wednesday: Practice coding
+    </label>
+
+    <br>
+
+    <label>
+      <input type="checkbox" class="task">
+      Thursday: Apply the concept to my project
+    </label>
+
+    <br>
+
+    <label>
+      <input type="checkbox" class="task">
+      Saturday: Complete deep work
+    </label>
+
+    <br>
+
+    <label>
+      <input type="checkbox" class="task">
+      Sunday: Review and plan next week
+    </label>
+
+    <br><br>
+
+    <p>
+      Progress:
+      <span id="progress">0%</span>
+    </p>
+
+    <button onclick="resetTasks()">
+      Reset Checklist
+    </button>
+
+  </div>
+</section>
+
+<script>
+  const tasks = document.querySelectorAll(".task");
+  const progress = document.getElementById("progress");
+
+  function updateProgress() {
+    const completed = [...tasks].filter(task => task.checked).length;
+    const percentage = Math.round(
+      (completed / tasks.length) * 100
+    );
+
+    progress.textContent = percentage + "%";
+
+    localStorage.setItem(
+      "learningProgress",
+      JSON.stringify([...tasks].map(task => task.checked))
+    );
+  }
+
+  function resetTasks() {
+    tasks.forEach(task => task.checked = false);
+    updateProgress();
+  }
+
+  const savedTasks = JSON.parse(
+    localStorage.getItem("learningProgress") || "[]"
+  );
+
+  tasks.forEach((task, index) => {
+    task.checked = savedTasks[index] || false;
+    task.addEventListener("change", updateProgress);
+  });
+
+  updateProgress();
+</script>
 <footer>
   <p>My Career Growth Journey • Data Science & Machine Learning</p>
 </footer>
